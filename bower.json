@@ -3,6 +3,7 @@
     "version": "0.0.1",
     "main": "./base.js",
     "dependencies": {
-        "angular": "latest"
+        "angular": "latest",
+        "angular-route":"latest"
     }
 }

@@ -5,7 +5,7 @@
     <title>TMDB</title>
     <link rel="stylesheet" href="style.css"/>
     <script src="../bower_components/angular/angular.js"></script>
-    <script src="../configuration.js"></script>
+    <script src="../../TMDB_Node/configuration.js"></script>
     <script>
         var app = angular.module('myApp',[]);
         app.controller('MyCtrl', function($scope, $http){
@@ -14,22 +14,28 @@
             console.log($scope.name);
             console.log(api_key);
 
-
+            console.log(location.href)
 
             $scope.callAjax =function (event){
                 /*console.log(event.keyCode);*/
+
                 if(event.keyCode === 13){
+
                     var url = "http://api.themoviedb.org/3/search/movie?api_key="+api_key+"&query="+$scope.name;
                     $http.get(url).success(function(data){
                         //console.log(data);
                        // $scope.movies = data;
                        // console.log($scope.movies);
                         $scope.movies = {};
-                        $scope.info = "";
-                        $scope.image = "";
+                       /* $scope.info = "";
+                        $scope.image = "";*/
 
                         for(var i=0;i<data.results.length;i++){
                             /*console.log(data.results[i].title);*/
+                           // console.log(data.results[i].id);
+                            var id = data.results[i].id;
+                            data.results[i].nav_url = "http://localhost:63342/Angular_Intro/movies/movie_display.html?id="+id;
+                            //console.log(data.results[i].nav_url);
                             if(!data.results[i].poster_path){
                                 data.results[i].poster_path= "no_image.gif";
                             }
@@ -38,6 +44,8 @@
                             }
 
                             $scope.movies[data.results[i].title] = data.results[i];
+
+                           /* $scope.movies[nav_url] = "https://api.themoviedb.org/3/movie/"+data.results[i].id+"?api_key="+api_key;*/
                         }
 
                         console.log($scope.movies);
@@ -65,7 +73,7 @@
             {{movie.vote_average}}
             {{movie.vote_count}}
         </div>
-        <img class="img" width="250px" ng-src="{{movie.poster_path}}">
+        <a href="{{movie.nav_url}}" ><img class="img" width="250px" ng-src="{{movie.poster_path}}"></a>
     </div>
     </div>
 </div>

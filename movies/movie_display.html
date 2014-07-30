@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html ng-app="myApp" >
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Movie Specific Display</title>
+    <link rel="stylesheet" href="disp_style.css">
+    <script src="../bower_components/angular/angular.js"></script>
+    <script src="../../TMDB_Node/configuration.js"></script>
+    <script>
+        var val = location.href.split('?');
+        console.log(val);
+
+        var map;
+
+        if(val[1]) {
+            var id = val[1].match(/\d+/);
+            map = angular.module("myApp", []);
+            map.controller('MyCtrl', function ($scope, $http) {
+                $scope.movieObj = {};
+                $scope.hello = "hello";
+                var url = "https://api.themoviedb.org/3/movie/"+id+"?api_key="+api_key;
+                console.log(url);
+                $scope.relDate= "";
+                $scope.runTime= "";
+                $scope.prodCountry = "";
+                $scope.prodCompany = "";
+                $scope.timeUnit = "";
+                $scope.msg = "";
+
+                //var data = $http.get()
+                $http.get(url).success(function(data){
+                    //console.log(data);
+                    if(data) {
+                        $scope.relDate= "Release Date: ";
+                        $scope.runTime= "  Running time: ";
+                        $scope.prodCountry = "Production Country:  ";
+                        $scope.prodCompany = "  Production Company: ";
+                        $scope.timeUnit = "minutes";
+                        if (!data.poster_path) {
+                            data.poster_path = "no_image.gif";
+                        }
+                        else {
+                            data.poster_path = "http://image.tmdb.org/t/p/w500" + data.poster_path;
+                        }
+
+                        $scope.movieObj = data;
+                        console.log($scope.movieObj);
+                    }
+                    else{
+                        map = angular.module("myApp", []);
+                        map.controller('MyCtrl', function ($scope) {
+                            $scope.msg = "Movie Not Found";
+
+                        });
+                    }
+                });
+
+            });
+        }
+        else{
+            map = angular.module("myApp", []);
+            map.controller('MyCtrl', function ($scope) {
+                $scope.msg = "Movie Not Found";
+            });
+        }
+
+    </script>
+</head>
+<body>
+<div ng-controller="MyCtrl">
+    <!--<div>{{hello}}</div>-->
+    <div id="movie_disp">
+        <a href="{{movieObj.homepage}}"> <div id="heading">{{movieObj.original_title}}</div></a>
+        <div id="tag">{{movieObj.tagline}}</div>
+        <img id="poster" width="250px" ng-src="{{movieObj.poster_path}}"/>
+        <div id="stats1">
+            <span class="left">{{relDate}} </span><span class="left val"> {{movieObj.release_date}}&nbsp; &nbsp;</span>
+            <span class="right">{{runTime}} </span><span class="right val"> {{movieObj.runtime}} {{timeUnit}}</span>
+        </div>
+        <div id="stats2">
+            <span class="left">{{prodCountry}}</span><span class="left val"> {{movieObj.production_countries[0].name}}&nbsp;&nbsp;</span>
+            <span class="right">{{prodCompany}} </span><span class="right val"> {{movieObj.production_companies[0].name}}</span>
+        </div>
+        <div id="summary"> {{movieObj.overview}}</div>
+    </div>
+</div>
+<div ng-controller="MyCtrl">
+    <div id="not-found">
+        {{msg}}
+    </div>
+</div>
+</body>
+</html>
