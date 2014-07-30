@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html ng-app="myApp"> <!--/* Declares that the entire doc is controlled by Angular*/-->
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Angular Fundamentals</title>
+    <script src="bower_components/angular/angular.js"></script>
+    <script>
+
+        var mapp = angular.module('myApp',[]);
+        //Created module. Didn't take any dependencies. Eg of dependencies: fs
+        //Similar to require statement in NodeJS
+        mapp.controller('MyCtrl',function ($scope){  //$scope is the model.It is local to this controller
+           $scope.name = "Hamid";
+           $scope.printLength = function(){
+             alert($scope.name.length);
+           };
+        });
+    </script>
+</head>
+<body>
+    <div ng-controller="MyCtrl">
+        <input type="text" ng-model="name"/>
+        <span>
+            {{name}}
+        </span>
+        <button ng-click="printLength()">Length of Name</button>
+    </div>
+</body>
+</html>

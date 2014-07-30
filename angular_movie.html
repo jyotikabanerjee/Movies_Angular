@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Movie</title>
+    <style>
+        body, html{
+            margin: 0;
+            padding: 0;
+            /*font: 300 1em 'Helvetica Neue';*/
+            height: 100%;
+            width: 100%;
+            font: 300 1em 'Helvetica Neue';
+        }
+
+        body, html{
+            margin: 0;
+            padding: 0;
+            /*font: 300 1em 'Helvetica Neue';*/
+            height: 100%;
+            width: 100%;
+        }
+
+        div.divimg{
+            position: relative;
+            width: 300px;
+            padding: 0;
+            margin:0;
+        }
+
+        div.data{
+            position: absolute;
+            bottom: 0;
+            color: white;
+            font-size: 0.85em;
+            padding: 1em;
+            background-color: rgba(0,0,0,0.5);
+            display: none;
+        }
+
+        div.img:hover > div.data{
+            display: block;
+            transition: all 500ms ease;
+        }
+    </style>
+</head>
+
+<body>
+<div class="divimg">
+    <div class="data"> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</div>
+    <img class="img" width="300px" src="http://www.scannain.com/media/lucy_es-poster-300x445.jpg"/>
+</div>
+</body>
+</html>

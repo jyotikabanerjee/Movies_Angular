@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>restCountries</title>
+    <style>
+        html,body{
+            height: 100%;
+            width: 100%;
+            font: 300 1em 'Helvetica Neue';
+        }
+
+        div.neighbors{
+            background-color: #eee;
+            font: 300 1em 'helvetica neue';
+            display: inline-block;
+            margin: 0.5em;
+            padding: 0.2em;
+        }
+
+    </style>
+    <script src="bower_components/angular/angular.js"></script>
+    <script>
+        var mapp = angular.module('myApp',[]);
+        //Created module. Didn't take any dependencies. Eg of dependencies: fs
+        //Similar to require statement in NodeJS
+        mapp.controller('MyCtrl',function ($scope, $http){  //$scope is the model.It is local to this controller
+            $scope.search = '';
+            $http.get('http://restcountries.eu/rest/v1').success(function (data) {
+                //console.log(data);
+                $scope.countries = data;
+
+                $scope.obj = {};
+                data.forEach(function(country){
+                    $scope.obj[country.alpha3Code]  = country.name;
+                });
+
+                //console.log($scope.obj);
+
+                for(var i=0; i<data.length; i++){
+                    data[i].border_names = [];
+                    for(var j=0; j<data[i].borders.length; j++){
+                        data[i].border_names.push($scope.obj[data[i].borders[j]]);
+                     }
+                    console.log(data[i].border_names);
+                 }
+            });
+
+        });
+    </script>
+</head>
+<body>
+<div ng-controller="MyCtrl">
+        <!--{{countries}}-->
+        <input type="text" ng-model="search">
+        <!--<div ng-repeat= "country in countries | filter:search">-->
+        <div ng-repeat= "country in countries | filter:search | orderBy:'capital':true ">
+            <!--True sets it to reverse i.e descending order-->
+            <!--Note that you have only passed a key name: capital - to orderBy - Not country.capital-->
+            <div>
+                <!--<div>{{country.name}}</div>
+                <div>{{country.capital}}</div>
+                <div>{{country.region}}</div>-->
+                <!--<div ng-repeat="(key, value) in country"> {{key}} ::> {{value}}</div>-->
+                <div>{{country.name}} ::> {{country.capital}}</div>
+                <!--Technique 1:-->
+                <div class="neighbors" ng-repeat="neighbor in country.border_names">{{neighbor}}</div>
+                <!--Technique 2:-->
+
+            </div>
+        </div>
+</div>
+</body>

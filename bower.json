@@ -1,0 +1,8 @@
+{
+    "name": "angular_hw",
+    "version": "0.0.1",
+    "main": "./base.js",
+    "dependencies": {
+        "angular": "latest"
+    }
+}

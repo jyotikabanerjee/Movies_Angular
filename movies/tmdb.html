@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>TMDB</title>
+    <link rel="stylesheet" href="style.css"/>
+    <script src="../bower_components/angular/angular.js"></script>
+    <script src="../configuration.js"></script>
+    <script>
+        var app = angular.module('myApp',[]);
+        app.controller('MyCtrl', function($scope, $http){
+            //$scope.hello = "Hello World";
+            $scope.name = '';
+            console.log($scope.name);
+            console.log(api_key);
+
+
+
+            $scope.callAjax =function (event){
+                /*console.log(event.keyCode);*/
+                if(event.keyCode === 13){
+                    var url = "http://api.themoviedb.org/3/search/movie?api_key="+api_key+"&query="+$scope.name;
+                    $http.get(url).success(function(data){
+                        //console.log(data);
+                       // $scope.movies = data;
+                       // console.log($scope.movies);
+                        $scope.movies = {};
+                        $scope.info = "";
+                        $scope.image = "";
+
+                        for(var i=0;i<data.results.length;i++){
+                            /*console.log(data.results[i].title);*/
+                            if(!data.results[i].poster_path){
+                                data.results[i].poster_path= "no_image.gif";
+                            }
+                            else{
+                                data.results[i].poster_path = "http://image.tmdb.org/t/p/w500"+data.results[i].poster_path;
+                            }
+
+                            $scope.movies[data.results[i].title] = data.results[i];
+                        }
+
+                        console.log($scope.movies);
+
+
+
+
+                    });
+                }
+            }
+        });
+    </script>
+</head>
+<body>
+<div id="container" ng-controller="MyCtrl">
+    <div id="inpcontainer">
+    <input ng-keydown="callAjax($event)" type="text" id="search" ng-model="name" placeholder="Enter data here"/>
+    </div>
+    <div class="datacontainer">
+    <div  ng-repeat="movie in movies" class="divimg" >
+        <div class="data">
+            {{movie.original_title}}
+            {{movie.release_date}}
+            {{movie.popularity}}
+            {{movie.vote_average}}
+            {{movie.vote_count}}
+        </div>
+        <img class="img" width="250px" ng-src="{{movie.poster_path}}">
+    </div>
+    </div>
+</div>
+</body>
+</html>

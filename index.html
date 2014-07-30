@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Angular Hello World</title>
+    <!--link rel="stylesheet" href="base.css"-->
+    <script src="bower_components/angular/angular.js"></script>
+    <script>
+        /*
+        * 1. Script src Angular
+        * 2. Create a module
+        * 3. Map the module name using ng-App to the portion to be controlled by the module. //See html tag above
+        * 4. Create a controller
+        * 5. Create a view by mapping the ng-controller to an element
+        * 6. Launch and Check
+        * */
+
+        var myApp = angular.module('myApp',[]); //Created module. Didn't take any dependencies.
+        myApp.controller('MyCtrl', function ($scope) {
+            //$Scope is the model
+            //MyCtrl is the controller
+            $scope.message={
+                data:'Hello World'
+            };
+
+
+        });
+
+     </script>
+</head>
+<body>
+    <div ng-controller="MyCtrl">
+        <div>
+            {{message.data}}
+        </div>
+    </div>
+</body>
+</html>
